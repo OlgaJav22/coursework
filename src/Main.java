@@ -1,3 +1,5 @@
+import org.w3c.dom.ls.LSOutput;
+
 public class Main {
     private static Employee[] employees;
 
@@ -24,11 +26,11 @@ public class Main {
         System.out.println();
         raisSalaryEmployees();
         int number = 5;
-        System.out.println("\n Сотрудник с минимальной зарплатой в отделе № " + number + "\t" + findSalaryMin1(findEmployeeDepart(number)));
-        System.out.println("\n Сотрудник с максимальной зарплатой в отделе № " + number + "\t" + findSalaryMax1(findEmployeeDepart(number)));
-        System.out.println("\n Общая сумма зарплат сотрудников отдела № " + number + "\t" + "составила: " + calculateSumSalaryDepart((findEmployeeDepart(number))));
-        System.out.println("\n Средняя зарплата по отделу № " + number + " составила: " + findAverageValueSalary1(findEmployeeDepart(number)));
-        raisSalaryEmployees1(findEmployeeDepart(number));
+        System.out.println("\n Сотрудник с минимальной зарплатой в отделе № " + number + "\t" + findSalaryMin1(number));
+        System.out.println("\n Сотрудник с максимальной зарплатой в отделе № " + number + "\t" + findSalaryMax1(number));
+        System.out.println("\n Общая сумма зарплат сотрудников отдела № " + number + "\t" + "составила: " + calculateSumSalaryDepart(number));
+        System.out.println("\n Средняя зарплата по отделу № " + number + " составила: " + findAverageValueSalary1(number));
+        raisSalaryEmployees1(number);
         printListEmployees1(number);
         System.out.println("\n Сотрудники с зарплатой меньше 35000 рублей: ");
         printListEmployeesSalaryMinSpecified(35000);
@@ -127,56 +129,60 @@ public class Main {
         return result;
     }
 
-    public static Employee findSalaryMin1(Employee[] employees1) {
-        Employee empl = employees1[0];
+    public static Employee findSalaryMin1(int depart) {
+        Employee employeeDepart = null;
+        Employee [] empl = findEmployeeDepart(depart);
         double minSalary = Double.POSITIVE_INFINITY;
-        for (int i = 0; i < employees1.length; i++) {
-            if (employees1[i] != null && employees1[i].getSalary() < minSalary) {
-                minSalary = employees1[i].getSalary();
-                empl = employees1[i];
+        for (int i = 0; i < empl.length; i++) {
+            if (empl[i] != null && empl[i].getSalary() < minSalary) {
+                minSalary = empl[i].getSalary();
+                employeeDepart = empl[i];
+
+
             }
         }
-        return empl;
+        return employeeDepart;
     }
 
-    public static Employee findSalaryMax1(Employee[] employees1) {
-        Employee empl = employees1[0];
+    public static Employee findSalaryMax1(int depart) {
+        Employee employeeDepart = null;
+        Employee [] empl = findEmployeeDepart(depart);
         double maxSalary = Double.NEGATIVE_INFINITY;
-        for (int i = 0; i < employees1.length; i++) {
-            if (employees1[i] != null && employees1[i].getSalary() > maxSalary) {
-                maxSalary = employees1[i].getSalary();
-                empl = employees1[i];
+        for (int i = 0; i < empl.length; i++) {
+            if (empl[i] != null && empl[i].getSalary() > maxSalary) {
+                maxSalary = empl[i].getSalary();
+                employeeDepart = empl[i];
             }
         }
-        return empl;
+        return employeeDepart;
     }
-    public static double calculateSumSalaryDepart(Employee[] employees1) {
+    public static double calculateSumSalaryDepart(int number) {
 
         double  sum = 0;
-        for (int i = 0; i < employees1.length; i++) {
-            if (employees1[i] != null) {
-                sum = sum + employees1[i].getSalary();
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i] != null && employees[i].getDepartament()==number) {
+                sum = sum + employees[i].getSalary();
 
             }
         }
         return sum;
     }
-    public static double findAverageValueSalary1(Employee [] employees1) {
+    public static double findAverageValueSalary1(int number) {
         int countСurrentEmployees = 0;
-        for (int i = 0; i < employees1.length; i++) {
-            if (employees1[i] != null) {
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i] != null && employees[i].getDepartament()==number) {
                 countСurrentEmployees++;
             }
         }
-        return  calculateSumSalaryDepart(employees1)/ countСurrentEmployees;
+        return  calculateSumSalaryDepart(number)/ countСurrentEmployees;
     }
 
-    public static void raisSalaryEmployees1(Employee[] employees1) {
+    public static void raisSalaryEmployees1(int number) {
         double total = 0;
-        for (int i = 0; i < employees1.length; i++) {
-            if (employees1[i] != null) {
-                total = employees1[i].getSalary() + (employees1[i].getSalary() * 0.01);
-                System.out.println("\n" + employees1[i].getFullName() + " - " + total);
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i] != null && employees[i].getDepartament()==number ) {
+                total = employees[i].getSalary() + (employees[i].getSalary() * 0.01);
+                System.out.println("\n" + employees[i].getFullName() + " - " + total);
             }
         }
     }
